@@ -8,11 +8,15 @@ import "stringutils/strings.sol";
 abstract contract TestUtils is Test {
     using strings for *;
 
-    function deployUpgradeable(address proxyAdmin, address implementation, bytes memory data) public returns (address) {
+    function _deployUpgradeable(address proxyAdmin, address implementation, bytes memory data) internal returns (address) {
         return address(new TransparentUpgradeableProxy(implementation, proxyAdmin, data));
     }
 
-    function generateSelectors(string memory _facetName) internal returns (bytes4[] memory selectors) {
+    function _generateSelectors(string memory _facetName) internal returns (bytes4[] memory selectors) {
+        return _generateSelectors(_facetName, 3);
+    }
+
+    function _generateSelectors(string memory _facetName, uint256 retries) internal returns (bytes4[] memory selectors) {
         //get string of contract methods
         string[] memory cmd = new string[](4);
         cmd[0] = "forge";
@@ -21,6 +25,13 @@ abstract contract TestUtils is Test {
         cmd[3] = "methods";
         bytes memory res = vm.ffi(cmd);
         string memory st = string(res);
+
+        // if empty, try again
+        if (bytes(st).length == 0) {
+            if (retries != 0) {
+                return _generateSelectors(_facetName, retries - 1);
+            }
+        }
 
         // extract function signatures and take first 4 bytes of keccak
         strings.slice memory s = st.toSlice();

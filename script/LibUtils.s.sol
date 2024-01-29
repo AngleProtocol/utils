@@ -9,7 +9,7 @@ import "stringutils/strings.sol";
 abstract contract LibUtils is Script {
     using strings for *;
 
-    function lzEndPoint(uint256 chainId) public returns (ILayerZeroEndpoint) {
+    function _lzEndPoint(uint256 chainId) internal returns (ILayerZeroEndpoint) {
         // TODO temporary check if LZ updated their sdk
         if (chainId == CHAIN_GNOSIS) {
             return ILayerZeroEndpoint(0x9740FF91F1985D8d2B71494aE1A2f723bb3Ed9E4);
@@ -33,7 +33,7 @@ abstract contract LibUtils is Script {
         return ILayerZeroEndpoint(address(bytes20(res)));
     }
 
-    function getAllContracts(uint256 chainId) public returns (address[] memory allContracts) {
+    function _getAllContracts(uint256 chainId) internal returns (address[] memory allContracts) {
         string[] memory cmd = new string[](3);
         cmd[0] = "node";
         cmd[1] = "utils/getAllContracts.js";
@@ -45,7 +45,7 @@ abstract contract LibUtils is Script {
         allContracts = abi.decode(res, (address[]));
     }
 
-    function chainToContract(uint256 chainId, ContractType name) public returns (address) {
+    function _chainToContract(uint256 chainId, ContractType name) internal returns (address) {
         string[] memory cmd = new string[](4);
         cmd[0] = "node";
         cmd[1] = "utils/contractAddress.js";
@@ -92,7 +92,7 @@ abstract contract LibUtils is Script {
         return address(bytes20(res));
     }
 
-    function stringToUint(string memory s) public pure returns (uint) {
+    function _stringToUint(string memory s) internal pure returns (uint) {
         bytes memory b = bytes(s);
         uint result = 0;
         for (uint256 i = 0; i < b.length; i++) {
@@ -104,7 +104,7 @@ abstract contract LibUtils is Script {
         return result;
     }
 
-    function getLZChainId(uint256 chainId) public returns (uint16) {
+    function _getLZChainId(uint256 chainId) internal returns (uint16) {
         string[] memory cmd = new string[](3);
         cmd[0] = "node";
         cmd[1] = "utils/layerZeroChainIds.js";
@@ -115,7 +115,7 @@ abstract contract LibUtils is Script {
         return uint16(stringToUint(string(res)));
     }
 
-    function getChainIdFromLZChainId(uint256 lzChainId) internal returns (uint16) {
+    function _getChainIdFromLZChainId(uint256 lzChainId) internal returns (uint16) {
         string[] memory cmd = new string[](3);
         cmd[0] = "node";
         cmd[1] = "utils/chainIdFromLZChainIds.js";
@@ -125,7 +125,11 @@ abstract contract LibUtils is Script {
         return uint16(stringToUint(string(res)));
     }
 
-    function generateSelectors(string memory _facetName) internal returns (bytes4[] memory selectors) {
+    function _generateSelectors(string memory _facetName) internal returns (bytes4[] memory selectors) {
+        return _generateSelectors(_facetName, 3);
+    }
+
+    function _generateSelectors(string memory _facetName, uint256 retries) internal returns (bytes4[] memory selectors) {
         //get string of contract methods
         string[] memory cmd = new string[](4);
         cmd[0] = "forge";
@@ -134,6 +138,13 @@ abstract contract LibUtils is Script {
         cmd[3] = "methods";
         bytes memory res = vm.ffi(cmd);
         string memory st = string(res);
+
+        // if empty, try again
+        if (bytes(st).length == 0) {
+            if (retries != 0) {
+                return _generateSelectors(_facetName, retries - 1);
+            }
+        }
 
         // extract function signatures and take first 4 bytes of keccak
         strings.slice memory s = st.toSlice();
