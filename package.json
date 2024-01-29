@@ -1,0 +1,10 @@
+{
+  "name": "utils",
+  "version": "1.0.0",
+  "repository": "git@github.com:AngleProtocol/utils.git",
+  "author": "Angle Labs, Inc.",
+  "license": "BUSL-1.1",
+  "dependencies": {
+    "@angleprotocol/sdk": "^3.0.129"
+  }
+}

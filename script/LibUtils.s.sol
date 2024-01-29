@@ -2,10 +2,13 @@
 pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
-import "./Constants.s.sol";
+import "../src/Constants.sol";
 import { ILayerZeroEndpoint } from "../src/interfaces/ILayerZeroEndpoint.sol";
+import "stringutils/strings.sol";
 
-contract LibUtils is Script {
+abstract contract LibUtils is Script {
+    using strings for *;
+
     function lzEndPoint(uint256 chainId) public returns (ILayerZeroEndpoint) {
         // TODO temporary check if LZ updated their sdk
         if (chainId == CHAIN_GNOSIS) {
@@ -120,5 +123,28 @@ contract LibUtils is Script {
 
         bytes memory res = vm.ffi(cmd);
         return uint16(stringToUint(string(res)));
+    }
+
+    function generateSelectors(string memory _facetName) internal returns (bytes4[] memory selectors) {
+        //get string of contract methods
+        string[] memory cmd = new string[](4);
+        cmd[0] = "forge";
+        cmd[1] = "inspect";
+        cmd[2] = _facetName;
+        cmd[3] = "methods";
+        bytes memory res = vm.ffi(cmd);
+        string memory st = string(res);
+
+        // extract function signatures and take first 4 bytes of keccak
+        strings.slice memory s = st.toSlice();
+        strings.slice memory delim = ":".toSlice();
+        strings.slice memory delim2 = ",".toSlice();
+        selectors = new bytes4[]((s.count(delim)));
+        for (uint i = 0; i < selectors.length; ++i) {
+            s.split('"'.toSlice());
+            selectors[i] = bytes4(s.split(delim).until('"'.toSlice()).keccak());
+            s.split(delim2);
+        }
+        return selectors;
     }
 }
