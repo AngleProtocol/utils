@@ -1,3 +1,4 @@
 forge-std/=lib/forge-std/src/
 oz/=lib/openzeppelin-contracts/contracts/
 stringutils/=lib/solidity-stringutils/src/
+lz/=lib/solidity-examples/contracts

@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "forge-std/Script.sol";
 import "../src/Constants.sol";
-import { ILayerZeroEndpoint } from "../src/interfaces/ILayerZeroEndpoint.sol";
+import { ILayerZeroEndpoint } from "lz/lzApp/interfaces/ILayerZeroEndpoint.sol";
 import "stringutils/strings.sol";
 
 abstract contract LibUtils is Script {
