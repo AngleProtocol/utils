@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.0;
 
-import "forge-std/Script.sol";
-import "../src/Constants.sol";
 import { ILayerZeroEndpoint } from "lz/lzApp/interfaces/ILayerZeroEndpoint.sol";
+import { TransparentUpgradeableProxy } from "../src/mock/MockProxyAdmin.sol";
+import "forge-std/Script.sol";
 import "stringutils/strings.sol";
+
+import "../src/Constants.sol";
 
 abstract contract LibUtils is Script {
     using strings for *;
@@ -220,5 +222,9 @@ abstract contract LibUtils is Script {
         }
 
         return tempBytes;
+    }
+
+    function _deployUpgradeable(address proxyAdmin, address implementation, bytes memory data) internal returns (address) {
+        return address(new TransparentUpgradeableProxy(implementation, proxyAdmin, data));
     }
 }
