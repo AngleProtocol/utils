@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 
 import { ILayerZeroEndpoint } from "lz/lzApp/interfaces/ILayerZeroEndpoint.sol";
-import { TransparentUpgradeableProxy } from "../src/mock/MockProxyAdmin.sol";
+import { TransparentUpgradeableProxy } from "oz/proxy/transparent/TransparentUpgradeableProxy.sol";
 import "forge-std/Script.sol";
 import "stringutils/strings.sol";
 
