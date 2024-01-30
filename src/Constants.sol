@@ -56,4 +56,5 @@ uint256 constant BASE_18 = 1e18;
 uint256 constant BASE_9 = 1e9;
 
 address constant IMMUTABLE_CREATE2_FACTORY_ADDRESS = 0x0000000000FFe8B47B3e2130213B802212439497;
+// TODO let's remove this address as it should works with any
 address constant DEPLOYER = 0xfdA462548Ce04282f4B6D6619823a7C64Fdc0185;
