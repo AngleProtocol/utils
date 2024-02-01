@@ -1,66 +1,39 @@
-## Foundry
+## Utils
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+The utils repository is used to store utils contracts and libraries that are used across multiple solidity projects. It is meant to be used as a submodule in other projects.
 
-Foundry consists of:
+## Installation
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```bash
+forge install https://github.com/AngleProtocol/utils
 ```
 
-### Test
+## Setup
 
-```shell
-$ forge test
+After installing you need to create a javascript file un utils named *forwardUtils.js* with the following content:
+
+```javascript
+const { exec } = require("child_process");
+
+if (process.argv.length < 3) {
+    console.error('Please provide a chain input as an argument.');
+    process.exit(1);
+}
+
+const command = process.argv[2];
+const extraArgs = process.argv.slice(3).join(' ');
+
+
+exec(`node lib/utils/utils/${command}.js ${extraArgs}`, (error, stdout, stderr) => {
+    if (error) {
+        console.log(error);
+        return;
+    }
+    if (stderr) {
+        console.log(stderr);
+        return;
+    }
+    console.log(stdout);
+});
 ```
 
-### Format
-
-```shell
-$ forge fmt
-```
-
-### Gas Snapshots
-
-```shell
-$ forge snapshot
-```
-
-### Anvil
-
-```shell
-$ anvil
-```
-
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
