@@ -1,13 +1,14 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.0;
 
-import { TransparentUpgradeableProxy } from "oz/proxy/transparent/TransparentUpgradeableProxy.sol";
 import { ILayerZeroEndpoint } from "lz/lzApp/interfaces/ILayerZeroEndpoint.sol";
-import "forge-std/Test.sol";
+import { TransparentUpgradeableProxy } from "oz/proxy/transparent/TransparentUpgradeableProxy.sol";
+import "forge-std/Base.sol";
 import "stringutils/strings.sol";
+
 import "../src/Constants.sol";
 
-abstract contract TestUtils is Test {
+contract CommonUtils is CommonBase {
     using strings for *;
 
     function _lzEndPoint(uint256 chainId) internal returns (ILayerZeroEndpoint) {
@@ -24,10 +25,11 @@ abstract contract TestUtils is Test {
             return ILayerZeroEndpoint(0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7);
         }
 
-        string[] memory cmd = new string[](3);
+        string[] memory cmd = new string[](4);
         cmd[0] = "node";
-        cmd[1] = "utils/layerZeroEndpoint.js";
-        cmd[2] = vm.toString(chainId);
+        cmd[1] = "utils/forwardUtils.js";
+        cmd[2] = "layerZeroEndpoint";
+        cmd[3] = vm.toString(chainId);
 
         bytes memory res = vm.ffi(cmd);
         if (res.length == 0) revert("Chain not supported");
@@ -35,10 +37,11 @@ abstract contract TestUtils is Test {
     }
 
     function _getAllContracts(uint256 chainId) internal returns (address[] memory allContracts) {
-        string[] memory cmd = new string[](3);
+        string[] memory cmd = new string[](4);
         cmd[0] = "node";
-        cmd[1] = "utils/getAllContracts.js";
-        cmd[2] = vm.toString(chainId);
+        cmd[1] = "utils/forwardUtils.js";
+        cmd[2] = "getAllContracts";
+        cmd[3] = vm.toString(chainId);
 
         bytes memory res = vm.ffi(cmd);
         // When process exit code is 1, it will return an empty bytes "0x"
@@ -47,44 +50,45 @@ abstract contract TestUtils is Test {
     }
 
     function _chainToContract(uint256 chainId, ContractType name) internal returns (address) {
-        string[] memory cmd = new string[](4);
+        string[] memory cmd = new string[](5);
         cmd[0] = "node";
-        cmd[1] = "utils/contractAddress.js";
-        cmd[2] = vm.toString(chainId);
+        cmd[1] = "utils/forwardUtils.js";
+        cmd[2] = "contractAddress";
+        cmd[3] = vm.toString(chainId);
 
-        if (name == ContractType.AgEUR) cmd[3] = "agEUR";
-        else if (name == ContractType.AgUSD) cmd[3] = "agUSD";
-        else if (name == ContractType.AgEURLZ) cmd[3] = "agEURLz";
-        else if (name == ContractType.AgUSDLZ) cmd[3] = "agUSDLz";
-        else if (name == ContractType.Angle) cmd[3] = "angle";
-        else if (name == ContractType.AngleLZ) cmd[3] = "angleLz";
-        else if (name == ContractType.AngleDistributor) cmd[3] = "angleDistributor";
-        else if (name == ContractType.AngleMiddleman) cmd[3] = "angleMiddleman";
-        else if (name == ContractType.AngleRouter) cmd[3] = "angleRouter";
-        else if (name == ContractType.CoreBorrow) cmd[3] = "coreBorrow";
-        else if (name == ContractType.CoreMerkl) cmd[3] = "coreMerkl";
-        else if (name == ContractType.DistributionCreator) cmd[3] = "distributionCreator";
-        else if (name == ContractType.Distributor) cmd[3] = "distributor";
-        else if (name == ContractType.FeeDistributor) cmd[3] = "feeDistributor";
-        else if (name == ContractType.GaugeController) cmd[3] = "gaugeController";
-        else if (name == ContractType.Governor) cmd[3] = "governor";
-        else if (name == ContractType.GovernorMultisig) cmd[3] = "governorMultisig";
-        else if (name == ContractType.GuardianMultisig) cmd[3] = "guardianMultisig";
-        else if (name == ContractType.MerklMiddleman) cmd[3] = "merklMiddleman";
-        else if (name == ContractType.ProposalReceiver) cmd[3] = "proposalReceiver";
-        else if (name == ContractType.ProposalSender) cmd[3] = "proposalSender";
-        else if (name == ContractType.ProxyAdmin) cmd[3] = "proxyAdmin";
-        else if (name == ContractType.SmartWalletWhitelist) cmd[3] = "smartWalletWhitelist";
-        else if (name == ContractType.StEUR) cmd[3] = "stEUR";
-        else if (name == ContractType.StUSD) cmd[3] = "stUSD";
-        else if (name == ContractType.Timelock) cmd[3] = "timelock";
-        else if (name == ContractType.TransmuterAgEUR) cmd[3] = "transmuterAgEUR";
-        else if (name == ContractType.TransmuterAgUSD) cmd[3] = "transmuterAgUSD";
-        else if (name == ContractType.TreasuryAgEUR) cmd[3] = "treasuryAgEUR";
-        else if (name == ContractType.TreasuryAgUSD) cmd[3] = "treasuryAgUSD";
-        else if (name == ContractType.veANGLE) cmd[3] = "veANGLE";
-        else if (name == ContractType.veBoost) cmd[3] = "veBoost";
-        else if (name == ContractType.veBoostProxy) cmd[3] = "veBoostProxy";
+        if (name == ContractType.AgEUR) cmd[4] = "agEUR";
+        else if (name == ContractType.AgUSD) cmd[4] = "agUSD";
+        else if (name == ContractType.AgEURLZ) cmd[4] = "agEURLz";
+        else if (name == ContractType.AgUSDLZ) cmd[4] = "agUSDLz";
+        else if (name == ContractType.Angle) cmd[4] = "angle";
+        else if (name == ContractType.AngleLZ) cmd[4] = "angleLz";
+        else if (name == ContractType.AngleDistributor) cmd[4] = "angleDistributor";
+        else if (name == ContractType.AngleMiddleman) cmd[4] = "angleMiddleman";
+        else if (name == ContractType.AngleRouter) cmd[4] = "angleRouter";
+        else if (name == ContractType.CoreBorrow) cmd[4] = "coreBorrow";
+        else if (name == ContractType.CoreMerkl) cmd[4] = "coreMerkl";
+        else if (name == ContractType.DistributionCreator) cmd[4] = "distributionCreator";
+        else if (name == ContractType.Distributor) cmd[4] = "distributor";
+        else if (name == ContractType.FeeDistributor) cmd[4] = "feeDistributor";
+        else if (name == ContractType.GaugeController) cmd[4] = "gaugeController";
+        else if (name == ContractType.Governor) cmd[4] = "governor";
+        else if (name == ContractType.GovernorMultisig) cmd[4] = "governorMultisig";
+        else if (name == ContractType.GuardianMultisig) cmd[4] = "guardianMultisig";
+        else if (name == ContractType.MerklMiddleman) cmd[4] = "merklMiddleman";
+        else if (name == ContractType.ProposalReceiver) cmd[4] = "proposalReceiver";
+        else if (name == ContractType.ProposalSender) cmd[4] = "proposalSender";
+        else if (name == ContractType.ProxyAdmin) cmd[4] = "proxyAdmin";
+        else if (name == ContractType.SmartWalletWhitelist) cmd[4] = "smartWalletWhitelist";
+        else if (name == ContractType.StEUR) cmd[4] = "stEUR";
+        else if (name == ContractType.StUSD) cmd[4] = "stUSD";
+        else if (name == ContractType.Timelock) cmd[4] = "timelock";
+        else if (name == ContractType.TransmuterAgEUR) cmd[4] = "transmuterAgEUR";
+        else if (name == ContractType.TransmuterAgUSD) cmd[4] = "transmuterAgUSD";
+        else if (name == ContractType.TreasuryAgEUR) cmd[4] = "treasuryAgEUR";
+        else if (name == ContractType.TreasuryAgUSD) cmd[4] = "treasuryAgUSD";
+        else if (name == ContractType.veANGLE) cmd[4] = "veANGLE";
+        else if (name == ContractType.veBoost) cmd[4] = "veBoost";
+        else if (name == ContractType.veBoostProxy) cmd[4] = "veBoostProxy";
         else revert("contract not supported");
 
         bytes memory res = vm.ffi(cmd);
@@ -106,10 +110,11 @@ abstract contract TestUtils is Test {
     }
 
     function _getLZChainId(uint256 chainId) internal returns (uint16) {
-        string[] memory cmd = new string[](3);
+        string[] memory cmd = new string[](4);
         cmd[0] = "node";
-        cmd[1] = "utils/layerZeroChainIds.js";
-        cmd[2] = vm.toString(chainId);
+        cmd[1] = "utils/forwardUtils.js";
+        cmd[2] = "layerZeroChainIds";
+        cmd[3] = vm.toString(chainId);
 
         bytes memory res = vm.ffi(cmd);
         if (res.length == 0) revert("Chain not supported");
@@ -117,10 +122,11 @@ abstract contract TestUtils is Test {
     }
 
     function _getChainIdFromLZChainId(uint256 lzChainId) internal returns (uint16) {
-        string[] memory cmd = new string[](3);
+        string[] memory cmd = new string[](4);
         cmd[0] = "node";
-        cmd[1] = "utils/chainIdFromLZChainIds.js";
-        cmd[2] = vm.toString(lzChainId);
+        cmd[1] = "utils/forwardUtils.js";
+        cmd[2] = "chainIdFromLZChainIds";
+        cmd[3] = vm.toString(lzChainId);
 
         bytes memory res = vm.ffi(cmd);
         return uint16(_stringToUint(string(res)));
