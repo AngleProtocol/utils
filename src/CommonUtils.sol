@@ -89,6 +89,7 @@ contract CommonUtils is CommonBase {
         else if (name == ContractType.veANGLE) cmd[4] = "veANGLE";
         else if (name == ContractType.veBoost) cmd[4] = "veBoost";
         else if (name == ContractType.veBoostProxy) cmd[4] = "veBoostProxy";
+        else if (name == ContractType.ProxyAdminGuardian) cmd[4] = "proxyAdminGuardian";
         else revert("contract not supported");
 
         bytes memory res = vm.ffi(cmd);

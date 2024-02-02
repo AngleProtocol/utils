@@ -53,6 +53,7 @@ else if(contracTtype == "treasuryAgUSD") contract = registry(parsedInput)?.agUSD
 else if(contracTtype == "veANGLE") contract = registry(parsedInput)?.veANGLE;
 else if(contracTtype == "veBoost") contract = registry(parsedInput)?.veBoost;
 else if(contracTtype == "veBoostProxy") contract = registry(parsedInput)?.veBoostProxy;
+else if(contracTtype == "proxyAdminGuardian") contract = registry(parsedInput)?.ProxyAdminGuardian;
 
 if(!contract) process.exit(1);
 // Call the function with the input

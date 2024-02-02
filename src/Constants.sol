@@ -34,7 +34,8 @@ enum ContractType {
     TreasuryAgUSD,
     veANGLE,
     veBoost,
-    veBoostProxy
+    veBoostProxy,
+    ProxyAdminGuardian
 }
 
 uint256 constant CHAIN_ETHEREUM = 1;
