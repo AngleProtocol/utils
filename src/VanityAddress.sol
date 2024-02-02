@@ -32,10 +32,9 @@ contract VanityAddress is Script, StdAssertions {
         );
     }
 
-    function minePrefix(bytes memory initCode, address deployer, uint24 prefix, uint256 initInt, uint256 iterations) internal view {
+    function minePrefix(bytes memory initCode, address deployer, uint24 prefix, uint256 initInt, uint256 iterations) internal pure returns (address computedAddress, uint256 i) {
         // Deploy diamond
-        uint256 i = initInt;
-        address computedAddress;
+        i = initInt;
         bool found = false;
         while (!found && i - initInt < iterations) {
             computedAddress = _findDeploymentAddress(
@@ -49,16 +48,11 @@ contract VanityAddress is Script, StdAssertions {
             i = i + 1;
         }
 
-        console.log("found ", found);
-        console.log("i ", i);
-        console.logBytes32(bytes32(abi.encodePacked(deployer, abi.encodePacked(uint96(i)))));
-        console.log("computedAddress ", computedAddress);
+        return (computedAddress, i);
     }
 
-    function minePostfix(bytes memory initCode, address deployer, uint24 postfix, uint256 initInt, uint256 iterations) internal view {
+    function minePostfix(bytes memory initCode, address deployer, uint24 postfix, uint256 initInt, uint256 iterations) internal pure returns (address computedAddress, uint256 i) {
         // Deploy diamond
-        uint256 i = initInt;
-        address computedAddress;
         bool found = false;
         while (!found && i - initInt < iterations) {
             computedAddress = _findDeploymentAddress(
@@ -72,16 +66,12 @@ contract VanityAddress is Script, StdAssertions {
             i = i + 1;
         }
 
-        console.log("found ", found);
-        console.log("i ", i);
-        console.logBytes32(bytes32(abi.encodePacked(deployer, abi.encodePacked(uint96(i)))));
-        console.log("computedAddress ", computedAddress);
+        return (computedAddress, i);
+
     }
 
-    function mine(bytes memory initCode, address deployer, uint24 prefix, uint24 postfix, uint256 initInt, uint256 iterations) internal view {
+    function mine(bytes memory initCode, address deployer, uint24 prefix, uint24 postfix, uint256 initInt, uint256 iterations) internal pure returns (address computedAddress, uint256 i) {
         // Deploy diamond
-        uint256 i = initInt;
-        address computedAddress;
         bool found = false;
         while (!found && i - initInt < iterations) {
             computedAddress = _findDeploymentAddress(
@@ -95,9 +85,6 @@ contract VanityAddress is Script, StdAssertions {
             i = i + 1;
         }
 
-        console.log("found ", found);
-        console.log("i ", i);
-        console.logBytes32(bytes32(abi.encodePacked(deployer, abi.encodePacked(uint96(i)))));
-        console.log("computedAddress ", computedAddress);
+        return (computedAddress, i);
     }
 }
