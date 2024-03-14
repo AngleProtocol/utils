@@ -2,6 +2,9 @@ function chain_to_uri {
   chain=$1
 
   case $chain in
+    "0")
+      echo $ETH_NODE_URI_FORK
+      ;;
     "1")
       echo $ETH_NODE_URI_MAINNET
       ;;
@@ -35,9 +38,6 @@ function chain_to_uri {
     "11")
         echo $ETH_NODE_URI_LINEA
         ;;
-    "12")
-        echo $ETH_NODE_URI_FORK
-        ;;
     *)
       ;;
   esac
@@ -47,6 +47,9 @@ function chain_to_chainId {
   chain=$1
 
   case $chain in
+    "0")
+      echo "0"
+      ;;
     "1")
       echo "1"
       ;;
@@ -79,9 +82,6 @@ function chain_to_chainId {
         ;;
     "11")
         echo "59144"
-        ;;
-    "12")
-        echo "0"
         ;;
     *)
       ;;
