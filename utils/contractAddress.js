@@ -20,10 +20,10 @@ const parsedInput = Number(chainInput);
 
 let contract
 
-if(contracTtype == "agEUR") contract = registry(parsedInput)?.agEUR?.AgToken;
-else if(contracTtype == "agUSD") contract = registry(parsedInput)?.agUSD?.AgToken;
-else if(contracTtype == "agEURLz") contract = registry(parsedInput)?.agEUR?.bridges.LayerZero;
-else if(contracTtype == "agUSDLz") contract = registry(parsedInput)?.agUSD?.bridges.LayerZero;
+if(contracTtype == "agEUR") contract = registry(parsedInput)?.EUR?.AgToken;
+else if(contracTtype == "agUSD") contract = registry(parsedInput)?.USD?.AgToken;
+else if(contracTtype == "agEURLz") contract = registry(parsedInput)?.EUR?.bridges.LayerZero;
+else if(contracTtype == "agUSDLz") contract = registry(parsedInput)?.USD?.bridges.LayerZero;
 else if(contracTtype == "angle") contract = registry(parsedInput)?.ANGLE;
 else if(contracTtype == "angleLz") contract = registry(parsedInput)?.bridges.LayerZero;
 else if(contracTtype == "angleDistributor") contract = registry(parsedInput)?.AngleDistributor;
@@ -43,13 +43,13 @@ else if(contracTtype == "proposalReceiver")  contract = registry(parsedInput)?.P
 else if(contracTtype == "proposalSender") contract = registry(parsedInput)?.ProposalSender;
 else if(contracTtype == "proxyAdmin") contract = registry(parsedInput)?.ProxyAdmin;
 else if(contracTtype == "smartWalletWhitelist") contract = registry(parsedInput)?.SmartWalletWhitelist;
-else if(contracTtype == "stEUR") contract = registry(parsedInput)?.agEUR?.Savings;
-else if(contracTtype == "stUSD") contract = registry(parsedInput)?.agUSD?.Savings;
+else if(contracTtype == "stEUR") contract = registry(parsedInput)?.EUR?.Savings;
+else if(contracTtype == "stUSD") contract = registry(parsedInput)?.USD?.Savings;
 else if(contracTtype == "timelock") contract = registry(parsedInput)?.Timelock;
-else if(contracTtype == "transmuterAgEUR") contract = registry(parsedInput)?.agEUR?.Transmuter;
-else if(contracTtype == "transmuterAgUSD") contract = registry(parsedInput)?.agUSD?.Transmuter;
-else if(contracTtype == "treasuryAgEUR") contract = registry(parsedInput)?.agEUR?.Treasury;
-else if(contracTtype == "treasuryAgUSD") contract = registry(parsedInput)?.agUSD?.Treasury;
+else if(contracTtype == "transmuterAgEUR") contract = registry(parsedInput)?.EUR?.Transmuter;
+else if(contracTtype == "transmuterAgUSD") contract = registry(parsedInput)?.USD?.Transmuter;
+else if(contracTtype == "treasuryAgEUR") contract = registry(parsedInput)?.EUR?.Treasury;
+else if(contracTtype == "treasuryAgUSD") contract = registry(parsedInput)?.USD?.Treasury;
 else if(contracTtype == "veANGLE") contract = registry(parsedInput)?.veANGLE;
 else if(contracTtype == "veBoost") contract = registry(parsedInput)?.veBoost;
 else if(contracTtype == "veBoostProxy") contract = registry(parsedInput)?.veBoostProxy;
