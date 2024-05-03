@@ -1,5 +1,4 @@
 const { registry, ChainId } = require('@angleprotocol/sdk');
-const { ethers } = require('ethers');
 
 if (process.argv.length < 3) {
     console.log('Usage: node getConnectedChains.js <chainId>');
