@@ -49,6 +49,19 @@ contract CommonUtils is CommonBase {
         allContracts = abi.decode(res, (address[]));
     }
 
+    function _getConnectedChains(string memory token) internal returns (uint256[] memory, address[] memory) {
+        string[] memory cmd = new string[](4);
+        cmd[0] = "node";
+        cmd[1] = "utils/forwardUtils.js";
+        cmd[2] = "getConnectedChains";
+        cmd[2] = token;
+
+        bytes memory res = vm.ffi(cmd);
+        address[] memory contracts = vm.parseJsonAddressArray(string(res), ".contracts");
+        uint256[] memory chains = vm.parseJsonUintArray(string(res), ".chains");
+        return (chains, contracts);
+    }
+
     function _chainToContract(uint256 chainId, ContractType name) internal returns (address) {
         string[] memory cmd = new string[](5);
         cmd[0] = "node";
