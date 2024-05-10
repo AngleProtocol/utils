@@ -54,7 +54,7 @@ contract CommonUtils is CommonBase {
         cmd[0] = "node";
         cmd[1] = "utils/forwardUtils.js";
         cmd[2] = "getConnectedChains";
-        cmd[2] = token;
+        cmd[3] = token;
 
         bytes memory res = vm.ffi(cmd);
         address[] memory contracts = vm.parseJsonAddressArray(string(res), ".contracts");
