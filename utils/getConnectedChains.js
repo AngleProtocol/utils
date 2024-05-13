@@ -14,20 +14,20 @@ let chains = [];
 for (const chain in ChainId) {
     switch (contract) {
         case 'EURA':
-            if (registry(chain)?.EUR?.agToken) {
-                contracts.push(registry(chain).EUR.agToken);
+            if (registry(chain)?.EUR?.bridges?.LayerZero) {
+                contracts.push(registry(chain)?.EUR?.bridges?.LayerZero);
                 chains.push(chain);
             }
             break;
         case 'USDA':
-            if (registry(chain)?.USD?.agToken) {
-                contracts.push(registry(chain).USD.agToken);
+            if (registry(chain)?.USD?.bridges?.LayerZero) {
+                contracts.push(registry(chain).USD.bridges?.LayerZero);
                 chains.push(chain);
             }
             break;
         case 'ANGLE':
-            if (registry(chain)?.ANGLE) {
-                contracts.push(registry(chain).ANGLE);
+            if (registry(chain)?.bridges?.LayerZero) {
+                contracts.push(registry(chain).bridges.LayerZero);
                 chains.push(chain);
             }
             break;
