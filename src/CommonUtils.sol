@@ -31,9 +31,9 @@ contract CommonUtils is CommonBase {
         cmd[2] = "layerZeroEndpoint";
         cmd[3] = vm.toString(chainId);
 
-        bytes memory res = vm.ffi(cmd);
-        if (res.length == 0) revert("Chain not supported");
-        return ILayerZeroEndpoint(address(bytes20(res)));
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        return ILayerZeroEndpoint(address(bytes20(res.stdout)));
     }
 
     function _getAllContracts(uint256 chainId) internal returns (address[] memory allContracts) {
@@ -43,10 +43,9 @@ contract CommonUtils is CommonBase {
         cmd[2] = "getAllContracts";
         cmd[3] = vm.toString(chainId);
 
-        bytes memory res = vm.ffi(cmd);
-        // When process exit code is 1, it will return an empty bytes "0x"
-        if (res.length == 0) revert("Chain not supported");
-        allContracts = abi.decode(res, (address[]));
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        allContracts = abi.decode(res.stdout, (address[]));
     }
 
     function _getConnectedChains(string memory token) internal returns (uint256[] memory, address[] memory) {
@@ -56,9 +55,10 @@ contract CommonUtils is CommonBase {
         cmd[2] = "getConnectedChains";
         cmd[3] = token;
 
-        bytes memory res = vm.ffi(cmd);
-        address[] memory contracts = vm.parseJsonAddressArray(string(res), ".contracts");
-        uint256[] memory chains = vm.parseJsonUintArray(string(res), ".chains");
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        address[] memory contracts = vm.parseJsonAddressArray(string(res.stdout), ".contracts");
+        uint256[] memory chains = vm.parseJsonUintArray(string(res.stdout), ".chains");
         return (chains, contracts);
     }
 
@@ -105,10 +105,9 @@ contract CommonUtils is CommonBase {
         else if (name == ContractType.ProxyAdminGuardian) cmd[4] = "proxyAdminGuardian";
         else revert("contract not supported");
 
-        bytes memory res = vm.ffi(cmd);
-        // When process exit code is 1, it will return an empty bytes "0x"
-        if (res.length == 0) revert("Chain not supported");
-        return address(bytes20(res));
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        return address(bytes20(res.stdout));
     }
 
     function _stringToUint(string memory s) internal pure returns (uint) {
@@ -130,9 +129,9 @@ contract CommonUtils is CommonBase {
         cmd[2] = "layerZeroChainIds";
         cmd[3] = vm.toString(chainId);
 
-        bytes memory res = vm.ffi(cmd);
-        if (res.length == 0) revert("Chain not supported");
-        return uint16(_stringToUint(string(res)));
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        return uint16(_stringToUint(string(res.stdout)));
     }
 
     function _getChainIdFromLZChainId(uint256 lzChainId) internal returns (uint16) {
@@ -142,8 +141,9 @@ contract CommonUtils is CommonBase {
         cmd[2] = "chainIdFromLZChainIds";
         cmd[3] = vm.toString(lzChainId);
 
-        bytes memory res = vm.ffi(cmd);
-        return uint16(_stringToUint(string(res)));
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        return uint16(_stringToUint(string(res.stdout)));
     }
 
     function _generateSelectors(string memory _facetName) internal returns (bytes4[] memory selectors) {
