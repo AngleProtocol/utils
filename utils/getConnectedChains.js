@@ -13,13 +13,13 @@ let chains = [];
 
 for (const chain in ChainId) {
     switch (contract) {
-        case 'EURA':
+        case 'EUR':
             if (registry(chain)?.EUR?.bridges?.LayerZero) {
                 contracts.push(registry(chain)?.EUR?.bridges?.LayerZero);
                 chains.push(chain);
             }
             break;
-        case 'USDA':
+        case 'USD':
             if (registry(chain)?.USD?.bridges?.LayerZero) {
                 contracts.push(registry(chain).USD.bridges?.LayerZero);
                 chains.push(chain);
