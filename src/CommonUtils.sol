@@ -11,6 +11,66 @@ import "../src/Constants.sol";
 contract CommonUtils is CommonBase {
     using strings for *;
 
+    mapping(uint256 => uint256) internal forkIdentifier;
+    uint256 public arbitrumFork;
+    uint256 public avalancheFork;
+    uint256 public ethereumFork;
+    uint256 public optimismFork;
+    uint256 public polygonFork;
+    uint256 public gnosisFork;
+    uint256 public bnbFork;
+    uint256 public celoFork;
+    uint256 public polygonZkEVMFork;
+    uint256 public baseFork;
+    uint256 public lineaFork;
+
+     function setUpForks() public virtual {
+        if (vm.envExists("ETH_NODE_URI_ARBITRUM")) {
+            arbitrumFork = vm.createFork(vm.envString("ETH_NODE_URI_ARBITRUM"));
+            forkIdentifier[CHAIN_ARBITRUM] = arbitrumFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_AVALANCHE")) {
+            avalancheFork = vm.createFork(vm.envString("ETH_NODE_URI_AVALANCHE"));
+            forkIdentifier[CHAIN_AVALANCHE] = avalancheFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_MAINNET")) {
+            ethereumFork = vm.createFork(vm.envString("ETH_NODE_URI_MAINNET"));
+            forkIdentifier[CHAIN_ETHEREUM] = ethereumFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_OPTIMISM")) {
+            optimismFork = vm.createFork(vm.envString("ETH_NODE_URI_OPTIMISM"));
+            forkIdentifier[CHAIN_OPTIMISM] = optimismFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_POLYGON")) {
+            polygonFork = vm.createFork(vm.envString("ETH_NODE_URI_POLYGON"));
+            forkIdentifier[CHAIN_POLYGON] = polygonFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_GNOSIS")) {
+            gnosisFork = vm.createFork(vm.envString("ETH_NODE_URI_GNOSIS"));
+            forkIdentifier[CHAIN_GNOSIS] = gnosisFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_BSC")) {
+            bnbFork = vm.createFork(vm.envString("ETH_NODE_URI_BSC"));
+            forkIdentifier[CHAIN_BNB] = bnbFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_CELO")) {
+            celoFork = vm.createFork(vm.envString("ETH_NODE_URI_CELO"));
+            forkIdentifier[CHAIN_CELO] = celoFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_POLYGON_ZKEVM")) {
+            polygonZkEVMFork = vm.createFork(vm.envString("ETH_NODE_URI_POLYGON_ZKEVM"));
+            forkIdentifier[CHAIN_POLYGONZKEVM] = polygonZkEVMFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_BASE")) {
+            baseFork = vm.createFork(vm.envString("ETH_NODE_URI_BASE"));
+            forkIdentifier[CHAIN_BASE] = baseFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_LINEA")) {
+            lineaFork = vm.createFork(vm.envString("ETH_NODE_URI_LINEA"));
+            forkIdentifier[CHAIN_LINEA] = lineaFork;
+        }
+    }
+
     function _lzEndPoint(uint256 chainId) internal returns (ILayerZeroEndpoint) {
         // TODO temporary check if LZ updated their sdk
         if (chainId == CHAIN_GNOSIS) {
@@ -31,9 +91,9 @@ contract CommonUtils is CommonBase {
         cmd[2] = "layerZeroEndpoint";
         cmd[3] = vm.toString(chainId);
 
-        bytes memory res = vm.ffi(cmd);
-        if (res.length == 0) revert("Chain not supported");
-        return ILayerZeroEndpoint(address(bytes20(res)));
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        return ILayerZeroEndpoint(address(bytes20(res.stdout)));
     }
 
     function _getAllContracts(uint256 chainId) internal returns (address[] memory allContracts) {
@@ -43,10 +103,9 @@ contract CommonUtils is CommonBase {
         cmd[2] = "getAllContracts";
         cmd[3] = vm.toString(chainId);
 
-        bytes memory res = vm.ffi(cmd);
-        // When process exit code is 1, it will return an empty bytes "0x"
-        if (res.length == 0) revert("Chain not supported");
-        allContracts = abi.decode(res, (address[]));
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        allContracts = abi.decode(res.stdout, (address[]));
     }
 
     function _getConnectedChains(string memory token) internal returns (uint256[] memory, address[] memory) {
@@ -56,9 +115,10 @@ contract CommonUtils is CommonBase {
         cmd[2] = "getConnectedChains";
         cmd[3] = token;
 
-        bytes memory res = vm.ffi(cmd);
-        address[] memory contracts = vm.parseJsonAddressArray(string(res), ".contracts");
-        uint256[] memory chains = vm.parseJsonUintArray(string(res), ".chains");
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        address[] memory contracts = vm.parseJsonAddressArray(string(res.stdout), ".contracts");
+        uint256[] memory chains = vm.parseJsonUintArray(string(res.stdout), ".chains");
         return (chains, contracts);
     }
 
@@ -105,10 +165,9 @@ contract CommonUtils is CommonBase {
         else if (name == ContractType.ProxyAdminGuardian) cmd[4] = "proxyAdminGuardian";
         else revert("contract not supported");
 
-        bytes memory res = vm.ffi(cmd);
-        // When process exit code is 1, it will return an empty bytes "0x"
-        if (res.length == 0) revert("Chain not supported");
-        return address(bytes20(res));
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        return address(bytes20(res.stdout));
     }
 
     function _stringToUint(string memory s) internal pure returns (uint) {
@@ -130,9 +189,9 @@ contract CommonUtils is CommonBase {
         cmd[2] = "layerZeroChainIds";
         cmd[3] = vm.toString(chainId);
 
-        bytes memory res = vm.ffi(cmd);
-        if (res.length == 0) revert("Chain not supported");
-        return uint16(_stringToUint(string(res)));
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        return uint16(_stringToUint(string(res.stdout)));
     }
 
     function _getChainIdFromLZChainId(uint256 lzChainId) internal returns (uint16) {
@@ -142,8 +201,9 @@ contract CommonUtils is CommonBase {
         cmd[2] = "chainIdFromLZChainIds";
         cmd[3] = vm.toString(lzChainId);
 
-        bytes memory res = vm.ffi(cmd);
-        return uint16(_stringToUint(string(res)));
+        VmSafe.FfiResult memory res = vm.tryFfi(cmd);
+        if (res.exitCode != 0) revert("Chain not supported");
+        return uint16(_stringToUint(string(res.stdout)));
     }
 
     function _generateSelectors(string memory _facetName) internal returns (bytes4[] memory selectors) {
