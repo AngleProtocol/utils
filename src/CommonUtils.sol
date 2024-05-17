@@ -11,6 +11,66 @@ import "../src/Constants.sol";
 contract CommonUtils is CommonBase {
     using strings for *;
 
+    mapping(uint256 => uint256) internal forkIdentifier;
+    uint256 public arbitrumFork;
+    uint256 public avalancheFork;
+    uint256 public ethereumFork;
+    uint256 public optimismFork;
+    uint256 public polygonFork;
+    uint256 public gnosisFork;
+    uint256 public bnbFork;
+    uint256 public celoFork;
+    uint256 public polygonZkEVMFork;
+    uint256 public baseFork;
+    uint256 public lineaFork;
+
+     function setUpForks() public virtual {
+        if (vm.envExists("ETH_NODE_URI_ARBITRUM")) {
+            arbitrumFork = vm.createFork(vm.envString("ETH_NODE_URI_ARBITRUM"));
+            forkIdentifier[CHAIN_ARBITRUM] = arbitrumFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_AVALANCHE")) {
+            avalancheFork = vm.createFork(vm.envString("ETH_NODE_URI_AVALANCHE"));
+            forkIdentifier[CHAIN_AVALANCHE] = avalancheFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_MAINNET")) {
+            ethereumFork = vm.createFork(vm.envString("ETH_NODE_URI_MAINNET"));
+            forkIdentifier[CHAIN_ETHEREUM] = ethereumFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_OPTIMISM")) {
+            optimismFork = vm.createFork(vm.envString("ETH_NODE_URI_OPTIMISM"));
+            forkIdentifier[CHAIN_OPTIMISM] = optimismFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_POLYGON")) {
+            polygonFork = vm.createFork(vm.envString("ETH_NODE_URI_POLYGON"));
+            forkIdentifier[CHAIN_POLYGON] = polygonFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_GNOSIS")) {
+            gnosisFork = vm.createFork(vm.envString("ETH_NODE_URI_GNOSIS"));
+            forkIdentifier[CHAIN_GNOSIS] = gnosisFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_BSC")) {
+            bnbFork = vm.createFork(vm.envString("ETH_NODE_URI_BSC"));
+            forkIdentifier[CHAIN_BNB] = bnbFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_CELO")) {
+            celoFork = vm.createFork(vm.envString("ETH_NODE_URI_CELO"));
+            forkIdentifier[CHAIN_CELO] = celoFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_POLYGON_ZKEVM")) {
+            polygonZkEVMFork = vm.createFork(vm.envString("ETH_NODE_URI_POLYGON_ZKEVM"));
+            forkIdentifier[CHAIN_POLYGONZKEVM] = polygonZkEVMFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_BASE")) {
+            baseFork = vm.createFork(vm.envString("ETH_NODE_URI_BASE"));
+            forkIdentifier[CHAIN_BASE] = baseFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_LINEA")) {
+            lineaFork = vm.createFork(vm.envString("ETH_NODE_URI_LINEA"));
+            forkIdentifier[CHAIN_LINEA] = lineaFork;
+        }
+    }
+
     function _lzEndPoint(uint256 chainId) internal returns (ILayerZeroEndpoint) {
         // TODO temporary check if LZ updated their sdk
         if (chainId == CHAIN_GNOSIS) {
