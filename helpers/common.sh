@@ -38,6 +38,9 @@ function chain_to_uri {
     "11")
         echo $ETH_NODE_URI_LINEA
         ;;
+    "12")
+        echo $ETH_NODE_URI_MODE
+        ;;
     *)
       ;;
   esac
@@ -82,6 +85,9 @@ function chain_to_chainId {
         ;;
     "11")
         echo "59144"
+        ;;
+    "12")
+        echo "34443"
         ;;
     *)
       ;;
