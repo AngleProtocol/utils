@@ -76,8 +76,8 @@ contract CommonUtils is CommonBase {
             forkIdentifier[CHAIN_MANTLE] = mantleFork;
         }
         if (vm.envExists("ETH_NODE_URI_MODE")) {
-            mantleFork = vm.createFork(vm.envString("ETH_NODE_URI_MODE"));
-            forkIdentifier[CHAIN_MANTLE] = mantleFork;
+            modeFork = vm.createFork(vm.envString("ETH_NODE_URI_MODE"));
+            forkIdentifier[CHAIN_MODE] = modeFork;
         }
     }
 
