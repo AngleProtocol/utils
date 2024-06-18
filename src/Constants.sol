@@ -58,6 +58,7 @@ uint256 constant CHAIN_LINEA = 59144;
 uint256 constant CHAIN_MANTLE = 5000;
 uint256 constant CHAIN_AURORA = 1313161554;
 uint256 constant CHAIN_MODE = 34443;
+uint256 constant CHAIN_BLAST = 238;
 
 uint256 constant BASE_18 = 1e18;
 uint256 constant BASE_9 = 1e9;
