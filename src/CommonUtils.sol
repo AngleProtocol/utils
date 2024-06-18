@@ -98,6 +98,8 @@ contract CommonUtils is CommonBase {
             return ILayerZeroEndpoint(0x3A73033C0b1407574C76BdBAc67f126f6b4a9AA9);
         } else if (chainId == CHAIN_LINEA) {
             return ILayerZeroEndpoint(0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7);
+        } else if (chainId == CHAIN_BLAST) {
+            return ILayerZeroEndpoint(0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7);
         }
 
         string[] memory cmd = new string[](4);
