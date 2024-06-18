@@ -41,6 +41,9 @@ function chain_to_uri {
     "12")
         echo $ETH_NODE_URI_MODE
         ;;
+    "13")
+        echo $ETH_NODE_URI_BLAST
+        ;;
     *)
       ;;
   esac
@@ -88,6 +91,9 @@ function chain_to_chainId {
         ;;
     "12")
         echo "34443"
+        ;;
+    "13")
+        echo "238"
         ;;
     *)
       ;;

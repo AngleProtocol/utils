@@ -25,6 +25,7 @@ contract CommonUtils is CommonBase {
     uint256 public lineaFork;
     uint256 public mantleFork;
     uint256 public modeFork;
+    uint256 public blastFork;
 
      function setUpForks() public virtual {
         if (vm.envExists("ETH_NODE_URI_ARBITRUM")) {
@@ -78,6 +79,10 @@ contract CommonUtils is CommonBase {
         if (vm.envExists("ETH_NODE_URI_MODE")) {
             modeFork = vm.createFork(vm.envString("ETH_NODE_URI_MODE"));
             forkIdentifier[CHAIN_MODE] = modeFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_BLAST")) {
+            blastFork = vm.createFork(vm.envString("ETH_NODE_URI_BLAST"));
+            forkIdentifier[CHAIN_BLAST] = blastFork;
         }
     }
 
