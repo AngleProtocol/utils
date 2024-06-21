@@ -93,7 +93,7 @@ function chain_to_chainId {
         echo "34443"
         ;;
     "13")
-        echo "238"
+        echo "81457"
         ;;
     *)
       ;;
