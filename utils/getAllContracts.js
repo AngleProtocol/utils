@@ -25,7 +25,7 @@ function getAllAddresses(registry) {
     if (typeof registry[key] === 'object' && registry[key] !== null) {
       // If the value is a nested object, recursively get addresses
       addresses = addresses.concat(getAllAddresses(registry[key]));
-    } else {
+    } else if (ethers.utils.isAddress(registry[key])) {
       // If the value is not an object, assume it's an address and add to the list
       addresses.push(ethers.utils.getAddress(registry[key])?.toString());
     }
