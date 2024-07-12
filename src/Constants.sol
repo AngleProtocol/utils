@@ -43,6 +43,7 @@ enum ContractType {
     ProxyAdminGuardian
 }
 
+uint256 constant CHAIN_FORK = 0;
 uint256 constant CHAIN_ETHEREUM = 1;
 uint256 constant CHAIN_ARBITRUM = 42161;
 uint256 constant CHAIN_AVALANCHE = 43114;
