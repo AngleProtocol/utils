@@ -26,6 +26,7 @@ contract CommonUtils is CommonBase {
     uint256 public mantleFork;
     uint256 public modeFork;
     uint256 public blastFork;
+    uint256 public chainFork;
 
     function setUpForks() public virtual {
         if (vm.envExists("ETH_NODE_URI_ARBITRUM")) {
