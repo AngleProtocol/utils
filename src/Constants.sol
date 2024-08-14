@@ -14,6 +14,7 @@ enum ContractType {
     Angle,
     AngleLZ,
     AngleDistributor,
+    AngleLabsMultisig,
     AngleMiddleman,
     AngleRouter,
     CoreBorrow,
