@@ -220,6 +220,8 @@ contract CommonUtils is CommonBase {
         else if (name == ContractType.veBoostProxy) cmd[4] = "veBoostProxy";
         else if (name == ContractType.ProxyAdminGuardian)
             cmd[4] = "proxyAdminGuardian";
+        else if (name == ContractType.AngleLabsMultisig)
+            cmd[4] = "angleLabsMultisig";
         else revert("contract not supported");
 
         VmSafe.FfiResult memory res = vm.tryFfi(cmd);
