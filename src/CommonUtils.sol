@@ -222,6 +222,7 @@ contract CommonUtils is CommonBase {
             cmd[4] = "proxyAdminGuardian";
         else if (name == ContractType.AngleLabsMultisig)
             cmd[4] = "angleLabsMultisig";
+        else if (name == ContractType.FlashLoan) cmd[4] = "flashloan";
         else revert("contract not supported");
 
         VmSafe.FfiResult memory res = vm.tryFfi(cmd);

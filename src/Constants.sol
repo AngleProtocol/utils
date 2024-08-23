@@ -41,7 +41,8 @@ enum ContractType {
     veANGLE,
     veBoost,
     veBoostProxy,
-    ProxyAdminGuardian
+    ProxyAdminGuardian,
+    FlashLoan
 }
 
 uint256 constant CHAIN_FORK = 0;
