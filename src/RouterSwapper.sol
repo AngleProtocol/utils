@@ -6,7 +6,7 @@ import { SafeERC20, IERC20 } from "oz/token/ERC20/utils/SafeERC20.sol";
 /// @title Swapper
 /// @author Angle Labs, Inc.
 /// @dev Abstract contract for swapping tokens using a router/aggregator
-abstract contract ASwapper {
+abstract contract RouterSwapper {
     using SafeERC20 for IERC20;
 
     /*//////////////////////////////////////////////////////////////
