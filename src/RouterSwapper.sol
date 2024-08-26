@@ -6,7 +6,7 @@ import { SafeERC20, IERC20 } from "oz/token/ERC20/utils/SafeERC20.sol";
 /// @title Swapper
 /// @author Angle Labs, Inc.
 /// @dev Abstract contract for swapping tokens using a router/aggregator
-abstract contract Swapper {
+abstract contract RouterSwapper {
     using SafeERC20 for IERC20;
 
     /*//////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ abstract contract Swapper {
      */
     event TokenTransferAddressUpdated(address newTokenTransferAddress);
 
-     /*//////////////////////////////////////////////////////////////
+    /*//////////////////////////////////////////////////////////////
                                 MODIFIERS
     //////////////////////////////////////////////////////////////*/
 
@@ -66,13 +66,23 @@ abstract contract Swapper {
                              ADMIN FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
-    function setSwapRouter(address newSwapRouter) external noZeroAddress(newSwapRouter) {
-       swapRouter = newSwapRouter;
+    /**
+     * @notice Set the router/aggregator address
+     * @param newSwapRouter address of the new router/aggregator
+     */
+    function setSwapRouter(address newSwapRouter) public virtual noZeroAddress(newSwapRouter) {
+        swapRouter = newSwapRouter;
 
         emit SwapRouterUpdated(newSwapRouter);
     }
 
-    function setTokenTransferAddress(address newTokenTransferAddress) external noZeroAddress(newTokenTransferAddress) {
+    /**
+     * @notice Set the token transfer address
+     * @param newTokenTransferAddress address of the new token transfer address
+     */
+    function setTokenTransferAddress(
+        address newTokenTransferAddress
+    ) public virtual noZeroAddress(newTokenTransferAddress) {
         tokenTransferAddress = newTokenTransferAddress;
 
         emit TokenTransferAddressUpdated(newTokenTransferAddress);
