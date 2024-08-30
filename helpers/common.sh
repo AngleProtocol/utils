@@ -44,6 +44,9 @@ function chain_to_uri {
     "13")
         echo $ETH_NODE_URI_BLAST
         ;;
+    "14")
+        echo $ETH_NODE_URI_XLAYER
+        ;;
     *)
       ;;
   esac
@@ -94,6 +97,9 @@ function chain_to_chainId {
         ;;
     "13")
         echo "81457"
+        ;;
+    "14")
+        echo "196"
         ;;
     *)
       ;;
