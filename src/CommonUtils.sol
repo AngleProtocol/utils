@@ -26,6 +26,7 @@ contract CommonUtils is CommonBase {
     uint256 public mantleFork;
     uint256 public modeFork;
     uint256 public blastFork;
+    uint256 public xlayerFork;
     uint256 public chainFork;
 
     function setUpForks() public virtual {
@@ -89,6 +90,10 @@ contract CommonUtils is CommonBase {
             blastFork = vm.createFork(vm.envString("ETH_NODE_URI_BLAST"));
             forkIdentifier[CHAIN_BLAST] = blastFork;
         }
+        if (vm.envExists("ETH_NODE_URI_XLAYER")) {
+            xlayerFork = vm.createFork(vm.envString("ETH_NODE_URI_XLAYER"));
+            forkIdentifier[CHAIN_XLAYER] = xlayerFork;
+        }
         if (vm.envExists("ETH_NODE_URI_FORK")) {
             chainFork = vm.createFork(vm.envString("ETH_NODE_URI_FORK"));
             forkIdentifier[CHAIN_FORK] = chainFork;
@@ -115,6 +120,9 @@ contract CommonUtils is CommonBase {
             return
                 ILayerZeroEndpoint(0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7);
         } else if (chainId == CHAIN_BLAST) {
+            return
+                ILayerZeroEndpoint(0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7);
+        } else if (chainId == CHAIN_XLAYER) {
             return
                 ILayerZeroEndpoint(0xb6319cC6c8c27A8F5dAF0dD3DF91EA35C4720dd7);
         }
