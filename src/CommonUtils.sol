@@ -32,6 +32,27 @@ contract CommonUtils is CommonBase, JsonReader {
     uint256 public blastFork;
     uint256 public xlayerFork;
     uint256 public chainFork;
+    uint256 public fantomFork;
+    uint256 public auroraFork;
+    uint256 public thunderCoreFork;
+    uint256 public coreDaoFork;
+    uint256 public taikoFork;
+    uint256 public fuseFork;
+    uint256 public immutableFork;
+    uint256 public scrollFork;
+    uint256 public mantaFork;
+    uint256 public seiFork;
+    uint256 public fraxtalFork;
+    uint256 public astarFork;
+    uint256 public astarZkEVMFork;
+    uint256 public rootstockFork;
+    uint256 public moonbeamFork;
+    uint256 public skaleFork;
+    uint256 public worldchainFork;
+    uint256 public liskFork;
+    uint256 public etherlinkFork;
+    uint256 public artheraFork;
+    uint256 public swellFork;
 
     function setUpForks() public virtual {
         if (vm.envExists("ETH_NODE_URI_ARBITRUM")) {
@@ -101,6 +122,102 @@ contract CommonUtils is CommonBase, JsonReader {
         if (vm.envExists("ETH_NODE_URI_FORK")) {
             chainFork = vm.createFork(vm.envString("ETH_NODE_URI_FORK"));
             forkIdentifier[Constants.CHAIN_FORK] = chainFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_FANTOM")) {
+            fantomFork = vm.createFork(vm.envString("ETH_NODE_URI_FANTOM"));
+            forkIdentifier[Constants.CHAIN_FANTOM] = fantomFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_AURORA")) {
+            auroraFork = vm.createFork(vm.envString("ETH_NODE_URI_AURORA"));
+            forkIdentifier[Constants.CHAIN_AURORA] = auroraFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_THUNDERCORE")) {
+            thunderCoreFork = vm.createFork(
+                vm.envString("ETH_NODE_URI_THUNDERCORE")
+            );
+            forkIdentifier[Constants.CHAIN_THUNDERCORE] = thunderCoreFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_COREDAO")) {
+            coreDaoFork = vm.createFork(vm.envString("ETH_NODE_URI_COREDAO"));
+            forkIdentifier[Constants.CHAIN_COREDAO] = coreDaoFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_TAIKO")) {
+            taikoFork = vm.createFork(vm.envString("ETH_NODE_URI_TAIKO"));
+            forkIdentifier[Constants.CHAIN_TAIKO] = taikoFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_FUSE")) {
+            fuseFork = vm.createFork(vm.envString("ETH_NODE_URI_FUSE"));
+            forkIdentifier[Constants.CHAIN_FUSE] = fuseFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_IMMUTABLE")) {
+            immutableFork = vm.createFork(
+                vm.envString("ETH_NODE_URI_IMMUTABLE")
+            );
+            forkIdentifier[Constants.CHAIN_IMMUTABLE] = immutableFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_SCROLL")) {
+            scrollFork = vm.createFork(vm.envString("ETH_NODE_URI_SCROLL"));
+            forkIdentifier[Constants.CHAIN_SCROLL] = scrollFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_MANTA")) {
+            mantaFork = vm.createFork(vm.envString("ETH_NODE_URI_MANTA"));
+            forkIdentifier[Constants.CHAIN_MANTA] = mantaFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_SEI")) {
+            seiFork = vm.createFork(vm.envString("ETH_NODE_URI_SEI"));
+            forkIdentifier[Constants.CHAIN_SEI] = seiFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_FRAXTAL")) {
+            fraxtalFork = vm.createFork(vm.envString("ETH_NODE_URI_FRAXTAL"));
+            forkIdentifier[Constants.CHAIN_FRAXTAL] = fraxtalFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_ASTAR")) {
+            astarFork = vm.createFork(vm.envString("ETH_NODE_URI_ASTAR"));
+            forkIdentifier[Constants.CHAIN_ASTAR] = astarFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_ASTARZKEVM")) {
+            astarZkEVMFork = vm.createFork(
+                vm.envString("ETH_NODE_URI_ASTARZKEVM")
+            );
+            forkIdentifier[Constants.CHAIN_ASTARZKEVM] = astarZkEVMFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_ROOTSTOCK")) {
+            rootstockFork = vm.createFork(
+                vm.envString("ETH_NODE_URI_ROOTSTOCK")
+            );
+            forkIdentifier[Constants.CHAIN_ROOTSTOCK] = rootstockFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_MOONBEAM")) {
+            moonbeamFork = vm.createFork(vm.envString("ETH_NODE_URI_MOONBEAM"));
+            forkIdentifier[Constants.CHAIN_MOONBEAM] = moonbeamFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_SKALE")) {
+            skaleFork = vm.createFork(vm.envString("ETH_NODE_URI_SKALE"));
+            forkIdentifier[Constants.CHAIN_SKALE] = skaleFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_WORLDCHAIN")) {
+            worldchainFork = vm.createFork(
+                vm.envString("ETH_NODE_URI_WORLDCHAIN")
+            );
+            forkIdentifier[Constants.CHAIN_WORLDCHAIN] = worldchainFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_LISK")) {
+            liskFork = vm.createFork(vm.envString("ETH_NODE_URI_LISK"));
+            forkIdentifier[Constants.CHAIN_LISK] = liskFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_ETHERLINK")) {
+            etherlinkFork = vm.createFork(
+                vm.envString("ETH_NODE_URI_ETHERLINK")
+            );
+            forkIdentifier[Constants.CHAIN_ETHERLINK] = etherlinkFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_ARTHERA")) {
+            artheraFork = vm.createFork(vm.envString("ETH_NODE_URI_ARTHERA"));
+            forkIdentifier[Constants.CHAIN_ARTHERA] = artheraFork;
+        }
+        if (vm.envExists("ETH_NODE_URI_SWELL")) {
+            swellFork = vm.createFork(vm.envString("ETH_NODE_URI_SWELL"));
+            forkIdentifier[Constants.CHAIN_SWELL] = swellFork;
         }
     }
 
