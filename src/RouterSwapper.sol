@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity ^0.8.0;
 
-import { SafeERC20, IERC20 } from "oz/token/ERC20/utils/SafeERC20.sol";
+import {SafeERC20, IERC20} from "oz/token/ERC20/utils/SafeERC20.sol";
 
 /// @title Swapper
 /// @author Angle Labs, Inc.
@@ -57,7 +57,10 @@ abstract contract RouterSwapper {
                                CONSTRUCTOR
     //////////////////////////////////////////////////////////////*/
 
-    constructor(address initialSwapRouter, address initialTokenTransferAddress) {
+    constructor(
+        address initialSwapRouter,
+        address initialTokenTransferAddress
+    ) {
         swapRouter = initialSwapRouter;
         tokenTransferAddress = initialTokenTransferAddress;
     }
@@ -70,7 +73,9 @@ abstract contract RouterSwapper {
      * @notice Set the router/aggregator address
      * @param newSwapRouter address of the new router/aggregator
      */
-    function setSwapRouter(address newSwapRouter) public virtual noZeroAddress(newSwapRouter) {
+    function setSwapRouter(
+        address newSwapRouter
+    ) public virtual noZeroAddress(newSwapRouter) {
         swapRouter = newSwapRouter;
 
         emit SwapRouterUpdated(newSwapRouter);
@@ -98,7 +103,11 @@ abstract contract RouterSwapper {
      * @param spender address of the router/aggregator
      * @param amount amount to approve
      */
-    function _approveTokenIfNeeded(address token, address spender, uint256 amount) internal {
+    function _approveTokenIfNeeded(
+        address token,
+        address spender,
+        uint256 amount
+    ) internal {
         uint256 allowance = IERC20(token).allowance(address(this), spender);
         if (allowance < amount) {
             IERC20(token).safeIncreaseAllowance(spender, amount - allowance);
@@ -128,7 +137,11 @@ abstract contract RouterSwapper {
      * @param callDatas array of bytes to call the router/aggregator
      * @param amounts array of amounts to swap
      */
-    function _swapCalldata(address[] calldata tokens, bytes[] calldata callDatas, uint256[] calldata amounts) internal {
+    function _swapCalldata(
+        address[] calldata tokens,
+        bytes[] calldata callDatas,
+        uint256[] calldata amounts
+    ) internal {
         uint256 length = tokens.length;
         for (uint256 i; i < length; ++i) {
             _approveTokenIfNeeded(tokens[i], tokenTransferAddress, amounts[i]);
@@ -142,7 +155,11 @@ abstract contract RouterSwapper {
      * @param callDatas array of bytes to call the router/aggregator
      * @param amounts array of amounts to swap
      */
-    function _swap(address[] memory tokens, bytes[] memory callDatas, uint256[] memory amounts) internal {
+    function _swap(
+        address[] memory tokens,
+        bytes[] memory callDatas,
+        uint256[] memory amounts
+    ) internal {
         uint256 length = tokens.length;
         for (uint256 i; i < length; ++i) {
             _approveTokenIfNeeded(tokens[i], tokenTransferAddress, amounts[i]);
