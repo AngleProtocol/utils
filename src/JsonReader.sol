@@ -22,7 +22,7 @@ contract JsonReader is Script {
         return
             string.concat(
                 root,
-                "/node_modules/@angleprotocol/sdk/dist/src/registry/registry.json"
+                "/node_modules/@merkl/registry/dist/src/registry.json"
             );
     }
 

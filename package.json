@@ -5,6 +5,7 @@
   "author": "Angle Labs, Inc.",
   "license": "GPL-3.0",
   "dependencies": {
-    "@angleprotocol/sdk": "^2.34.7"
+    "@angleprotocol/sdk": "^2.34.7",
+    "@merkl/registry": "latest"
   }
 }
